@@ -5,6 +5,7 @@ import type Tema from "../../../models/Tema";
 import type Postagem from "../../../models/Postagem";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { atualizar, buscar, cadastrar } from "../../../services/Service";
+import { ToastAlerta } from "../../../utils/ToastAlerta";
 
 function FormPostagem() {
 
@@ -59,7 +60,7 @@ function FormPostagem() {
 
     useEffect(() => {
         if (token === '') {
-            alert('Você precisa estar logado');
+            ToastAlerta("Você precisa estar logado!", "info")
             navigate('/');
         }
     }, [token]);
@@ -103,13 +104,13 @@ function FormPostagem() {
                         Authorization: token
                     }
                 });
+                ToastAlerta("Postagem atualizada com sucesso!", "sucesso");
 
-                alert('Postagem atualizada com sucesso');
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao atualizar a Postagem');
+                    ToastAlerta("Erro ao atualizar a Postagem!", "error");
                 }
             }
         } else {
@@ -119,13 +120,13 @@ function FormPostagem() {
                         Authorization: token
                     }
                 });
+                ToastAlerta("Postagem cadastrada com sucesso!", "sucesso");
 
-                alert('Postagem cadastrada com sucesso');
             } catch (error: any) {
                 if (error.toString().includes('401')) {
                     handleLogout();
                 } else {
-                    alert('Erro ao cadastrar a Postagem');
+                     ToastAlerta("Erro ao cadastrar a Postagem!", "erro")
                 }
             }
         }
@@ -191,7 +192,7 @@ function FormPostagem() {
                     type="submit"
                     className="rounded disabled:bg-slate-200 bg-indigo-400 hover:bg-indigo-800 
                                 text-white font-bold w-1/2 mx-auto py-2 flex justify-center"
-                                disabled={carregandoTema}
+                    disabled={carregandoTema}
                 >
                     {isLoading ?
                         <ClipLoader
